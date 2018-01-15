@@ -1,11 +1,10 @@
 package com.phpdaddy.eshopibm.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-
-import org.hibernate.validator.constraints.NotEmpty;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Customer {
