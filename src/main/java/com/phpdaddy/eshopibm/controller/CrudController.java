@@ -14,12 +14,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class RestController<T, ID extends Serializable> {
+public abstract class CrudController<T, ID extends Serializable> {
 
     private CrudRepository<T, ID> crudRepository;
 
 
-    public RestController(CrudRepository<T, ID> repo) {
+    public CrudController(CrudRepository<T, ID> repo) {
         this.crudRepository = repo;
     }
 
