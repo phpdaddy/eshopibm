@@ -25,7 +25,7 @@ public abstract class CrudController<T, ID extends Serializable> {
         this.crudRepository = repo;
     }
 
-    @RequestMapping
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> listAll() {
         return new ResponseEntity<>(this.crudRepository.findAll(), HttpStatus.OK);
     }

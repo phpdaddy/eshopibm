@@ -36,4 +36,12 @@ public class Category {
     public void setItems(Set<Item> items) {
         this.items = items;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
