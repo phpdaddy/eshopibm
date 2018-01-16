@@ -1,5 +1,6 @@
 package com.phpdaddy.eshopibm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Customer {
     private String email;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Order> orders = new HashSet<>();
 
     public Integer getId() {

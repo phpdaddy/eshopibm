@@ -1,8 +1,9 @@
 package com.phpdaddy.eshopibm.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,12 +15,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne()
     private Customer customer;
 
-    @NotEmpty
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Item> items = new HashSet<>();
 
     public Integer getId() {

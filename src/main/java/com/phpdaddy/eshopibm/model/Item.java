@@ -3,6 +3,7 @@ package com.phpdaddy.eshopibm.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,12 +17,12 @@ public class Item {
     @Column(nullable = false)
     private String name;
 
-    @NotEmpty
+    @NotNull
     @Column(nullable = false)
     private Integer price;
 
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     private Order order;
 

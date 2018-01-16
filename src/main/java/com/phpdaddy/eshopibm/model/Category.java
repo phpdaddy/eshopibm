@@ -1,5 +1,6 @@
 package com.phpdaddy.eshopibm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Category {
     @Column(nullable = false)
     private String name;
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private Set<Item> items = new HashSet<>();
 
     public String getName() {
