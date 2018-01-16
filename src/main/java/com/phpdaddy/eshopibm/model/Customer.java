@@ -25,8 +25,7 @@ public class Customer {
     @Column(nullable = false)
     private String email;
 
-    @NotEmpty
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Order> orders = new HashSet<>();
 
     public Integer getId() {

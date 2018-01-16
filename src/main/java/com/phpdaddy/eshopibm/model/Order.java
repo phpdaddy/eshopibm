@@ -13,6 +13,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @NotEmpty
     @ManyToOne()
     private Customer customer;
 

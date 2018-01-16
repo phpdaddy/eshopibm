@@ -26,7 +26,10 @@ public class PersistenceConfig {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
 
+
         return transactionManager;
     }
+
+
 }
 
