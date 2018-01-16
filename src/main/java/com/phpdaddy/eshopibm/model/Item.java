@@ -27,10 +27,10 @@ public class Item {
 
     @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_category",
+    @JoinTable(name = "Category_Item",
             joinColumns = {@JoinColumn(name = "item_id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id")})
-    private Set<Category> userProfiles = new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -62,5 +62,9 @@ public class Item {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
     }
 }

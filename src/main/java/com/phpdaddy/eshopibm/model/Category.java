@@ -2,18 +2,21 @@ package com.phpdaddy.eshopibm.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class Category {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
     @NotEmpty
     @Column(nullable = false)
     private String name;
-    @ManyToMany
+    @ManyToMany(mappedBy = "categories")
     private Set<Item> items = new HashSet<>();
 
     public String getName() {

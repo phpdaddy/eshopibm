@@ -7,16 +7,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "Order_")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToOne
+    @ManyToOne()
     private Customer customer;
 
     @NotEmpty
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<Item> items = new HashSet<>();
 
     public Integer getId() {
@@ -33,5 +34,9 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Set<Item> getItems() {
+        return items;
     }
 }
