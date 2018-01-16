@@ -3,6 +3,7 @@ package com.phpdaddy.eshopibm.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,11 +20,17 @@ import java.util.Set;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> exceptionHandler(Exception ex) {
-        Error error = new Error(ex.getLocalizedMessage());
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Map<String, String> errorMap = new HashMap<>();
+        BindingResult errors = ex.getBindingResult();
+        for (FieldError e : errors.getFieldErrors()) {
+            errorMap.put(e.getField(), e.getDefaultMessage());
+        }
         ex.printStackTrace();
-        return new ResponseEntity<>(error, getStatusType(ex));
+        ValidationError validationError = new ValidationError(errorMap);
+        return new ResponseEntity<>(validationError, getStatusType(ex));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -38,16 +45,24 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(validationError, getStatusType(ex));
     }
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        Map<String, String> errorMap = new HashMap<>();
-        BindingResult errors = ex.getBindingResult();
-        for (FieldError e : errors.getFieldErrors()) {
-            errorMap.put(e.getField(), e.getDefaultMessage());
+    @ExceptionHandler(value = {TransactionSystemException.class})
+    public ResponseEntity<?> handleTxException(TransactionSystemException ex) {
+        Error error;
+        Throwable t = ex.getRootCause();
+        if (t instanceof ConstraintViolationException) {
+            return constraintViolationExceptionHandler((ConstraintViolationException) t);
+        } else {
+            ex.printStackTrace();
+            error = new Error(ex.getLocalizedMessage());
         }
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> exceptionHandler(Exception ex) {
+        Error error = new Error(ex.getLocalizedMessage());
         ex.printStackTrace();
-        ValidationError validationError = new ValidationError(errorMap);
-        return new ResponseEntity<>(validationError, getStatusType(ex));
+        return new ResponseEntity<>(error, getStatusType(ex));
     }
 
     @Override
